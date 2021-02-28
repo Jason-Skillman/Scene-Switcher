@@ -1,0 +1,16 @@
+{
+  "name": "com.jasonskillman.objectpool",
+  "displayName": "Object Pool",
+  "version": "1.0.2",
+  "unity": "2018.1",
+  "description": "An object pool data structure for Unity.",
+  "keywords": [
+    "tools"
+  ],
+  "category": "Object Pool",
+  "author": {
+    "name": "Jason Skillman",
+    "email": "jason_skillman@outlook.com",
+    "url": "https://github.com/Jason-Skillman"
+  }
+}
