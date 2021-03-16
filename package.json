@@ -1,12 +1,9 @@
 {
-  "name": "com.jasonskillman.unitysceneswitcher",
-  "displayName": "Unity Scene Switcher",
+  "name": "com.jasonskillman.sceneswitcher",
+  "displayName": "Scene Switcher",
   "version": "1.0.0",
   "unity": "2018.1",
   "description": "",
-  "keywords": [
-    "tools"
-  ],
   "category": "",
   "author": {
     "name": "Jason Skillman",

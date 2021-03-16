@@ -1,2 +1,2 @@
-# Unity-Scene-Switcher
+# Scene-Switcher
 Todo

@@ -1,4 +1,4 @@
-# Unity Scene Switcher Changelog
+# Scene Switcher Changelog
 
-## [1.0.0] - 11/08/2020
-- Unity Scene Switcher release.
+## [1.0.0] - 03/16/2021
+- Scene Switcher release.
