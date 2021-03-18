@@ -2,12 +2,11 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneSwitcherWindow : EditorWindow {
 	
-	private struct SceneObj {
-		public string GUID { get; set; }
+	private struct SceneAsset {
+		public string GUID { get; private set; }
 		public string Path => AssetDatabase.GUIDToAssetPath(GUID);
 		public string Name {
 			get {
@@ -19,15 +18,19 @@ public class SceneSwitcherWindow : EditorWindow {
 						index = i;
 				}
 
-				int extentionLength = 6;	//.unity
+				int extLength = 6;	//.unity
 
-				return Path.Substring(index + 1, Path.Length - index - 1 - extentionLength);
+				return Path.Substring(index + 1, Path.Length - index - 1 - extLength);
 			}
+		}
+
+		public SceneAsset(string guid) {
+			GUID = guid;
 		}
 	}
 
 	private ReorderableList reorderableList;
-	private SceneObj[] sceneObjs;
+	private SceneAsset[] sceneObjs;
 	private string filter;
 	
 	[MenuItem("Window/Scene Switcher")]
@@ -47,18 +50,17 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 
 	private void CacheScenes() {
-		string[] sceneGUIDs = AssetDatabase.FindAssets("t: " + nameof(Scene) + " " + filter);
-		sceneObjs = new SceneObj[sceneGUIDs.Length];
+		string[] sceneGUIDs = AssetDatabase.FindAssets("t: " + nameof(UnityEngine.SceneManagement.Scene) + " " + filter);
+		sceneObjs = new SceneAsset[sceneGUIDs.Length];
 		
 		for(int i = 0; i < sceneGUIDs.Length; i++) {
-			SceneObj scene = new SceneObj();
-			scene.GUID = sceneGUIDs[i];
-			sceneObjs[i] = scene;
+			SceneAsset sceneAsset = new SceneAsset(sceneGUIDs[i]);
+			sceneObjs[i] = sceneAsset;
 		}
 	}
 	
 	private void CreateReorderableList() {
-		reorderableList = new ReorderableList(sceneObjs, typeof(SceneObj), false, false, false, false);
+		reorderableList = new ReorderableList(sceneObjs, typeof(SceneAsset), false, false, false, false);
 		reorderableList.drawElementCallback = DrawElementCallback;
 		reorderableList.elementHeight = 24.0f;
 	}
