@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +27,6 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 	
 	private ReorderableList reorderableList;
-
 	private SceneObj[] sceneObjs;
 	
 	[MenuItem("Window/Scene Switcher")]
@@ -45,7 +42,6 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 
 	private void OnGUI() {
-		//GUI.Label(new Rect(0, 0, 100, 20), "Test");
 		reorderableList.DoLayoutList();
 	}
 
@@ -61,22 +57,36 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 	
 	private void CreateReorderableList() {
-		reorderableList = new ReorderableList(sceneObjs, typeof(SceneObj), true, true, false, false);
+		reorderableList = new ReorderableList(sceneObjs, typeof(SceneObj), false, true, false, false);
 		reorderableList.drawElementCallback = DrawElementCallback;
-		reorderableList.drawHeaderCallback = DrawHeaderCallback;
-		//reorderableList.onReorderCallback = OnReorder;
 		reorderableList.headerHeight = 0.0f;
 		reorderableList.elementHeight = 24.0f;
 	}
 	
 	private void DrawElementCallback(Rect rect, int index, bool isactive, bool isfocused) {
+		Rect currentRect = rect;
+
+		//Draw button
+		{
+			currentRect.width = 50.0f;
+			currentRect.height = 18.0f;
+			currentRect.y += (rect.height - currentRect.height) / 2;
+			if(GUI.Button(currentRect, "Load")) {
+				LoadScene(index);
+			}
+		}
 		
-		GUI.Label(rect, sceneObjs[index].Name);
-		
+		//Draw label
+		{
+			currentRect.x += 70.0f;
+			currentRect.y = rect.y;
+			currentRect.width = 200.0f;
+			GUI.Label(currentRect, sceneObjs[index].Name);
+		}
 	}
 
-	private void DrawHeaderCallback(Rect rect) {
-		EditorGUI.LabelField(rect, "Scene Switcher");
+	private void LoadScene(int index) {
+		EditorSceneManager.OpenScene(sceneObjs[index].Path);
 	}
 
 }
