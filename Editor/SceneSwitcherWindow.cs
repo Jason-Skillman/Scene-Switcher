@@ -66,27 +66,37 @@ public class SceneSwitcherWindow : EditorWindow {
 	private void DrawElementCallback(Rect rect, int index, bool isactive, bool isfocused) {
 		Rect currentRect = rect;
 
-		//Draw button
+		//Draw single load button
 		{
-			currentRect.width = 50.0f;
+			currentRect.width = 20.0f;
 			currentRect.height = 18.0f;
 			currentRect.y += (rect.height - currentRect.height) / 2;
-			if(GUI.Button(currentRect, "Load")) {
+			if(GUI.Button(currentRect, "S")) {
 				LoadScene(index);
+			}
+		}
+		
+		//Draw additive load button
+		{
+			currentRect.x += 25;
+			currentRect.width = 20.0f;
+			currentRect.height = 18.0f;
+			if(GUI.Button(currentRect, "A")) {
+				LoadScene(index, OpenSceneMode.Additive);
 			}
 		}
 		
 		//Draw label
 		{
-			currentRect.x += 70.0f;
-			currentRect.y = rect.y;
+			currentRect.x += 50.0f;
+			//currentRect.y = rect.y;
 			currentRect.width = 200.0f;
 			GUI.Label(currentRect, sceneObjs[index].Name);
 		}
 	}
 
-	private void LoadScene(int index) {
-		EditorSceneManager.OpenScene(sceneObjs[index].Path);
+	private void LoadScene(int index, OpenSceneMode mode = OpenSceneMode.Single) {
+		EditorSceneManager.OpenScene(sceneObjs[index].Path, mode);
 	}
 
 }
