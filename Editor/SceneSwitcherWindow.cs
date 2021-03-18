@@ -25,9 +25,10 @@ public class SceneSwitcherWindow : EditorWindow {
 			}
 		}
 	}
-	
+
 	private ReorderableList reorderableList;
 	private SceneObj[] sceneObjs;
+	private string filter;
 	
 	[MenuItem("Window/Scene Switcher")]
 	static void OpenWindow() {
@@ -37,16 +38,20 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 
 	private void OnEnable() {
-		CacheScenes();
-		CreateReorderableList();
+		UpdateList();
 	}
 
 	private void OnGUI() {
-		reorderableList.DoLayoutList();
+		//Draw search bar
+		filter = EditorGUILayout.TextField("Search", filter);
+
+		UpdateList();
+
+		reorderableList.DoList(new Rect(0.0f, 30.0f, position.width, position.height));
 	}
 
 	private void CacheScenes() {
-		string[] sceneGUIDs = AssetDatabase.FindAssets("t: " + nameof(Scene));
+		string[] sceneGUIDs = AssetDatabase.FindAssets("t: " + nameof(Scene) + " " + filter);
 		sceneObjs = new SceneObj[sceneGUIDs.Length];
 		
 		for(int i = 0; i < sceneGUIDs.Length; i++) {
@@ -61,6 +66,11 @@ public class SceneSwitcherWindow : EditorWindow {
 		reorderableList.drawElementCallback = DrawElementCallback;
 		reorderableList.headerHeight = 0.0f;
 		reorderableList.elementHeight = 24.0f;
+	}
+
+	private void UpdateList() {
+		CacheScenes();
+		CreateReorderableList();
 	}
 	
 	private void DrawElementCallback(Rect rect, int index, bool isactive, bool isfocused) {
@@ -88,7 +98,7 @@ public class SceneSwitcherWindow : EditorWindow {
 		
 		//Draw label
 		{
-			currentRect.x += 50.0f;
+			currentRect.x += 40.0f;
 			//currentRect.y = rect.y;
 			currentRect.width = 200.0f;
 			GUI.Label(currentRect, sceneObjs[index].Name);
