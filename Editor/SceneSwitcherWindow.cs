@@ -9,8 +9,23 @@ using UnityEngine.SceneManagement;
 public class SceneSwitcherWindow : EditorWindow {
 	
 	struct SceneObj {
-		public string Path { get; set; }
-		public string Name => AssetDatabase.GUIDToAssetPath(Path);
+		public string GUID { get; set; }
+		public string Path => AssetDatabase.GUIDToAssetPath(GUID);
+		public string Name {
+			get {
+				//Remove the file's path
+				int index = 0;
+				for(var i = 0; i < Path.Length; i++) {
+					char c = Path[i];
+					if(c.Equals('/'))
+						index = i;
+				}
+
+				int extentionLength = 6;	//.unity
+
+				return Path.Substring(index + 1, Path.Length - index - 1 - extentionLength);
+			}
+		}
 	}
 	
 	private ReorderableList reorderableList;
@@ -26,16 +41,12 @@ public class SceneSwitcherWindow : EditorWindow {
 
 	private void OnEnable() {
 		CacheScenes();
-		
 		CreateReorderableList();
 	}
 
 	private void OnGUI() {
-		
-		GUI.Label(new Rect(0, 0, 100, ), "Test");
-		
+		//GUI.Label(new Rect(0, 0, 100, 20), "Test");
 		reorderableList.DoLayoutList();
-		
 	}
 
 	private void CacheScenes() {
@@ -44,7 +55,7 @@ public class SceneSwitcherWindow : EditorWindow {
 		
 		for(int i = 0; i < sceneGUIDs.Length; i++) {
 			SceneObj scene = new SceneObj();
-			scene.Path = sceneGUIDs[i];
+			scene.GUID = sceneGUIDs[i];
 			sceneObjs[i] = scene;
 		}
 	}
@@ -54,27 +65,18 @@ public class SceneSwitcherWindow : EditorWindow {
 		reorderableList.drawElementCallback = DrawElementCallback;
 		reorderableList.drawHeaderCallback = DrawHeaderCallback;
 		//reorderableList.onReorderCallback = OnReorder;
-		reorderableList.headerHeight = 0f;
-		reorderableList.elementHeight = 24f;
+		reorderableList.headerHeight = 0.0f;
+		reorderableList.elementHeight = 24.0f;
 	}
-
-	private void DrawHeaderCallback(Rect rect) {
-		EditorGUI.LabelField(rect, "Scene Switcher");
-	}
-
-
+	
 	private void DrawElementCallback(Rect rect, int index, bool isactive, bool isfocused) {
 		
 		GUI.Label(rect, sceneObjs[index].Name);
 		
 	}
-	
-	/*private void DrawElementBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused) {
-		ReorderableList.defaultBehaviours.DrawElementBackground(rect, index, isActive, isFocused, true);
-		using (Helper.ReplaceColor.With(kItemBorderColor)) {
-			GUI.Box(rect, GUIContent.none, _styles.itemBorder);
-		}
-	}*/
 
+	private void DrawHeaderCallback(Rect rect) {
+		EditorGUI.LabelField(rect, "Scene Switcher");
+	}
 
 }
