@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcherWindow : EditorWindow {
 	
-	struct SceneObj {
+	private struct SceneObj {
 		public string GUID { get; set; }
 		public string Path => AssetDatabase.GUIDToAssetPath(GUID);
 		public string Name {
@@ -37,10 +37,6 @@ public class SceneSwitcherWindow : EditorWindow {
 		window.Show();
 	}
 
-	private void OnEnable() {
-		UpdateList();
-	}
-
 	private void OnGUI() {
 		//Draw search bar
 		filter = EditorGUILayout.TextField("Search", filter);
@@ -62,9 +58,8 @@ public class SceneSwitcherWindow : EditorWindow {
 	}
 	
 	private void CreateReorderableList() {
-		reorderableList = new ReorderableList(sceneObjs, typeof(SceneObj), false, true, false, false);
+		reorderableList = new ReorderableList(sceneObjs, typeof(SceneObj), false, false, false, false);
 		reorderableList.drawElementCallback = DrawElementCallback;
-		reorderableList.headerHeight = 0.0f;
 		reorderableList.elementHeight = 24.0f;
 	}
 
@@ -81,7 +76,7 @@ public class SceneSwitcherWindow : EditorWindow {
 			currentRect.width = 20.0f;
 			currentRect.height = 18.0f;
 			currentRect.y += (rect.height - currentRect.height) / 2;
-			if(GUI.Button(currentRect, "S")) {
+			if(GUI.Button(currentRect, new GUIContent("S", "Opens the scene"))) {
 				LoadScene(index);
 			}
 		}
@@ -91,7 +86,7 @@ public class SceneSwitcherWindow : EditorWindow {
 			currentRect.x += 25;
 			currentRect.width = 20.0f;
 			currentRect.height = 18.0f;
-			if(GUI.Button(currentRect, "A")) {
+			if(GUI.Button(currentRect, new GUIContent("A", "Opens the scene additively"))) {
 				LoadScene(index, OpenSceneMode.Additive);
 			}
 		}
@@ -99,9 +94,8 @@ public class SceneSwitcherWindow : EditorWindow {
 		//Draw label
 		{
 			currentRect.x += 40.0f;
-			//currentRect.y = rect.y;
 			currentRect.width = 200.0f;
-			GUI.Label(currentRect, sceneObjs[index].Name);
+			GUI.Label(currentRect, new GUIContent(sceneObjs[index].Name, sceneObjs[index].Path));
 		}
 	}
 
