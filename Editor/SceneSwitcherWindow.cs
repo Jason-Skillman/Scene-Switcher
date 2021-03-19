@@ -34,9 +34,8 @@ public class SceneSwitcherWindow : EditorWindow {
 	private string filter;
 	
 	[MenuItem("Window/Scene Switcher")]
-	static void OpenWindow() {
-		//Get existing open window or if none, make a new one:
-		SceneSwitcherWindow window = (SceneSwitcherWindow)GetWindow(typeof(SceneSwitcherWindow));
+	private static void OpenWindow() {
+		SceneSwitcherWindow window = (SceneSwitcherWindow)GetWindow(typeof(SceneSwitcherWindow), false, "Scene Switcher");
 		window.Show();
 	}
 
