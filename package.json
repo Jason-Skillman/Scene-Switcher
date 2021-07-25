@@ -1,7 +1,7 @@
 {
   "name": "com.jasonskillman.sceneswitcher",
   "displayName": "Scene Switcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An editor plugin tool for Unity that shows all of your scenes in one place for easy switching within your project. Can load a single scene or additively. Also comes with a search bar to easily find that one scene you are looking for.",
   "keywords": [
 	"editor"
