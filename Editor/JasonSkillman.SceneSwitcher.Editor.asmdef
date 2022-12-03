@@ -1,6 +1,6 @@
 {
     "name": "JasonSkillman.SceneSwitcher.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "JasonSkillman.SceneSwitcher.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
